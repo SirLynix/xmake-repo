@@ -3,7 +3,9 @@ package("k4a")
     set_description(" A cross platform (Linux and Windows) user mode SDK to read data from your Azure Kinect device.")
     set_license("MIT")
 
-    set_urls("https://github.com/microsoft/Azure-Kinect-Sensor-SDK.git")
+    set_urls("https://github.com/microsoft/Azure-Kinect-Sensor-SDK/archive/$(version).tar.gz",
+             "https://github.com/microsoft/Azure-Kinect-Sensor-SDK.git")
+
     add_versions("v1.4.1", "73106554449c64aff6b068078f0eada50c4474e99945b5ceb6ea4aab9a68457f")
 
     add_deps("azure-c-shared-utility", "cmake", "libjpeg-turbo", "libsoundio", "libusb", "spdlog")
