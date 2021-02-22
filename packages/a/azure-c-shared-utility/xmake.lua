@@ -8,7 +8,7 @@ package("azure-c-shared-utility")
 
     add_versions("2020-12-09", "8cf59c75666c4cdffc2f672598668e6ce474c857e1be1ccebeee3edd50cbf69b")
 
-    add_deps("azure-c-shared-utility", "cmake")
+    add_deps("azure-macro-utils-c", "cmake")
 
     if is_plat("linux") then
         add_deps("libcurl", "openssl")
