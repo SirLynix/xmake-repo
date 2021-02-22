@@ -6,7 +6,7 @@ package("k4a")
     set_urls("https://github.com/microsoft/Azure-Kinect-Sensor-SDK.git")
     add_versions("v1.4.1", "73106554449c64aff6b068078f0eada50c4474e99945b5ceb6ea4aab9a68457f")
 
-    add_deps("cmake", "libusb")
+    add_deps("azure-c-shared-utility", "cmake", "libjpeg-turbo", "libsoundio", "libusb", "spdlog")
 
     on_install("windows", "linux", "macosx", function (package)
         -- There's no option to disable examples, tests or tool building
