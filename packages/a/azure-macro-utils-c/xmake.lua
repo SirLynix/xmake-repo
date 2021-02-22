@@ -5,8 +5,6 @@ package("azure-c-shared-utility")
 
     set_urls("https://github.com/Azure/macro-utils-c.git")
 
-    add_versions("2020-12-09", "8cf59c75666c4cdffc2f672598668e6ce474c857e1be1ccebeee3edd50cbf69b")
-
     on_install(function (package)
         os.cp("inc/*.h", package:installdir("include/macro_utils"))
     end)
