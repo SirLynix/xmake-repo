@@ -6,7 +6,7 @@ package("azure-c-shared-utility")
     set_urls("https://github.com/Azure/azure-c-shared-utility/archive/$(version).tar.gz",
              "https://github.com/Azure/azure-c-shared-utility.git")
 
-    add_versions("2020-12-09", "73106554449c64aff6b068078f0eada50c4474e99945b5ceb6ea4aab9a68457f")
+    add_versions("2020-12-09", "8cf59c75666c4cdffc2f672598668e6ce474c857e1be1ccebeee3edd50cbf69b")
 
     add_deps("cmake")
 
