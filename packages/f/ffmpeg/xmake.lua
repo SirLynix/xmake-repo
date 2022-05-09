@@ -86,6 +86,9 @@ package("ffmpeg")
         else
             table.insert(configs, "--disable-debug")
         end
+        if package:config("pic") ~= false then
+            table.insert(configs, "--enable-pic")
+        end
         if package:is_plat("android") then
             import("core.base.option")
             import("core.tool.toolchain")
