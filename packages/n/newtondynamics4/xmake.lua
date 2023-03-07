@@ -38,7 +38,8 @@ package("newtondynamics4")
             "-DNEWTON_BUILD_SANDBOX_DEMOS=OFF", 
             "-DNEWTON_BUILD_TEST=OFF", 
             "-DNEWTON_BUILD_CREATE_SUB_PROJECTS=OFF",
-            "-DNEWTON_ENABLE_AVX2_SOLVER=OFF"
+            "-DNEWTON_ENABLE_AVX2_SOLVER=OFF",
+            "-DNEWTON_EXCLUDE_TEST=ON"
         }
         if package:config("shared") then
             table.insert(configs, "-DBUILD_SHARED_LIBS=ON")
