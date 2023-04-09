@@ -32,6 +32,8 @@ package("joltphysics")
         add_syslinks("pthread")
     end
 
+    add_deps("cmake")
+
     on_load(function (package)
         if package:is_plat("windows") and not package:config("shared") then
             package:add("syslinks", "Advapi32")
@@ -39,13 +41,16 @@ package("joltphysics")
         if package:config("cross_platform_deterministic") then
             package:add("defines", "JPH_CROSS_PLATFORM_DETERMINISTIC")
         end
+        if package:config("debug_renderer") then
+            package:add("defines", "JPH_DEBUG_RENDERER")
+        end
         if package:config("double_precision") then
             package:add("defines", "JPH_DOUBLE_PRECISION")
         end
     end)
 
-    on_install(function (package)
-        os.cp(path.join(os.scriptdir(), "port", "xmake.lua"), "xmake.lua")
+    on_install("windows", "mingw", "linux", "macosx", "iphoneos", "android", "wasm", function (package)
+        --[[os.cp(path.join(os.scriptdir(), "port", "xmake.lua"), "xmake.lua")
         local configs = {}
         configs.cross_platform_deterministic = package:config("cross_platform_deterministic")
         configs.double_precision = package:config("double_precision")
@@ -60,7 +65,32 @@ package("joltphysics")
             configs.inst_sse4_2 = package:config("inst_sse4_2")
             configs.inst_tzcnt  = package:config("inst_tzcnt")
         end
-        import("package.tools.xmake").install(package, configs)
+        import("package.tools.xmake").install(package, configs)]]
+        os.cd("Build")
+        local configs = {
+            "-DINTERPROCEDURAL_OPTIMIZATION=OFF",
+            "-DTARGET_UNIT_TESTS=OFF",
+            "-DTARGET_HELLO_WORLD=OFF",
+            "-DTARGET_PERFORMANCE_TEST=OFF",
+            "-DTARGET_SAMPLES=OFF",
+            "-DTARGET_VIEWER=OFF",
+        }
+        table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:debug() and "Debug" or "Release"))
+        table.insert(configs, "-DCROSS_PLATFORM_DETERMINISTIC=" .. (package:config("cross_platform_deterministic") and "ON" or "OFF"))
+        table.insert(configs, "-DDOUBLE_PRECISION=" .. (package:config("double_precision") and "ON" or "OFF"))
+        table.insert(configs, "-DGENERATE_DEBUG_SYMBOLS=" .. (package:debug()))
+        table.insert(configs, "-DINTERPROCEDURAL_OPTIMIZATION=OFF")
+        table.insert(configs, "-DUSE_AVX=" .. (package:config("inst_avx") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_AVX2=" .. (package:config("inst_avx2") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_AVX512=" .. (package:config("inst_avx512") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_F16C=" .. (package:config("inst_f16c") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_FMADD=" .. (package:config("inst_fmadd") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_LZCNT=" .. (package:config("inst_lzcnt") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_SSE4_1=" .. (package:config("inst_sse4_1") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_SSE4_2=" .. (package:config("inst_sse4_2") and "ON" or "OFF"))
+        table.insert(configs, "-DUSE_TZCNT=" .. (package:config("inst_tzcnt") and "ON" or "OFF"))
+
+        import("package.tools.cmake").install(package, configs)
     end)
 
     on_test(function (package)
