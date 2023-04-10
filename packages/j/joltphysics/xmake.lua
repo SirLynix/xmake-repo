@@ -50,22 +50,6 @@ package("joltphysics")
     end)
 
     on_install("windows", "mingw", "linux", "macosx", "iphoneos", "android", "wasm", function (package)
-        --[[os.cp(path.join(os.scriptdir(), "port", "xmake.lua"), "xmake.lua")
-        local configs = {}
-        configs.cross_platform_deterministic = package:config("cross_platform_deterministic")
-        configs.double_precision = package:config("double_precision")
-        if is_arch("x86", "x64", "x86_64") then
-            configs.inst_avx    = package:config("inst_avx")
-            configs.inst_avx2   = package:config("inst_avx2")
-            configs.inst_avx512 = package:config("inst_avx512")
-            configs.inst_f16c   = package:config("inst_f16c")
-            configs.inst_fmadd  = package:config("inst_fmadd")
-            configs.inst_lzcnt  = package:config("inst_lzcnt")
-            configs.inst_sse4_1 = package:config("inst_sse4_1")
-            configs.inst_sse4_2 = package:config("inst_sse4_2")
-            configs.inst_tzcnt  = package:config("inst_tzcnt")
-        end
-        import("package.tools.xmake").install(package, configs)]]
         os.cd("Build")
         local configs = {
             "-DINTERPROCEDURAL_OPTIMIZATION=OFF",
@@ -81,6 +65,7 @@ package("joltphysics")
         table.insert(configs, "-DDOUBLE_PRECISION=" .. (package:config("double_precision") and "ON" or "OFF"))
         table.insert(configs, "-DGENERATE_DEBUG_SYMBOLS=" .. (package:debug() and "ON" or "OFF"))
         table.insert(configs, "-DINTERPROCEDURAL_OPTIMIZATION=OFF")
+        table.insert(configs, "-DUSE_STATIC_MSVC_RUNTIME_LIBRARY=OFF")
         table.insert(configs, "-DUSE_AVX=" .. (package:config("inst_avx") and "ON" or "OFF"))
         table.insert(configs, "-DUSE_AVX2=" .. (package:config("inst_avx2") and "ON" or "OFF"))
         table.insert(configs, "-DUSE_AVX512=" .. (package:config("inst_avx512") and "ON" or "OFF"))
