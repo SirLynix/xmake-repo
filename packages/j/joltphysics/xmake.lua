@@ -47,6 +47,10 @@ package("joltphysics")
         if package:is_plat("windows") and not package:config("shared") then
             package:add("syslinks", "Advapi32")
         end
+        package:add("defines", "JPH_PROFILE_ENABLED")
+        if package:is_plat("windows") then
+            package:add("defines", "JPH_FLOATING_POINT_EXCEPTIONS_ENABLED")
+        end
         if package:config("cross_platform_deterministic") then
             package:add("defines", "JPH_CROSS_PLATFORM_DETERMINISTIC")
         end
@@ -59,6 +63,7 @@ package("joltphysics")
     end)
 
     on_install("windows", "mingw", "linux", "macosx", "iphoneos", "android", "wasm", function (package)
+        io.replace("Jolt/Core/Core.h", "\nJPH_SUPPRESS_WARNINGS_STD_END", "#include <cstdint>\nJPH_SUPPRESS_WARNINGS_STD_END", { plain = true })
         -- Jolt CMakeLists had no install target/support for custom msvc runtime until 3.0.0
         local version = package:version()
         if not version or version:ge("3.0.0") then
