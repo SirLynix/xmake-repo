@@ -31,8 +31,8 @@ package("x265")
         if package:is_cross() and package:is_targetarch("arm.*") then
             table.insert(configs, "-DCROSS_COMPILE_ARM=ON")
             if not package:is_plat("android") then
-                table.insert(configs, "-DCMAKE_SYSTEM_PROCESSOR=" .. package:is_targetarch("aarch64", "arm64") and "aarch64" or "armv6l")
-                table.insert(configs, "-DCMAKE_SIZEOF_VOID_P=" .. package:is_targetarch("aarch64", "arm64") and "8" or "4")
+                table.insert(configs, "-DCMAKE_SYSTEM_PROCESSOR=" .. (package:is_targetarch("aarch64", "arm64") and "aarch64" or "armv6l"))
+                table.insert(configs, "-DCMAKE_SIZEOF_VOID_P=" .. (package:is_targetarch("aarch64", "arm64") and "8" or "4"))
             end
         end
         if package:version() then
