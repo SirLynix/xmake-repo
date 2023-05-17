@@ -28,8 +28,12 @@ package("x265")
         table.insert(configs, "-DENABLE_HDR10_PLUS=" .. (package:config("hdr10_plus") and "ON" or "OFF"))
         table.insert(configs, "-DENABLE_SVT_HEVC=" .. (package:config("svt_hevc") and "ON" or "OFF"))
         table.insert(configs, "-DENABLE_SHARED=" .. (package:config("shared") and "ON" or "OFF"))
-        if package:is_cross() and package:is_arch("arm.*") then
+        if package:is_cross() and package:is_targetarch("arm.*") then
             table.insert(configs, "-DCROSS_COMPILE_ARM=ON")
+            if not package:is_plat("android") then
+                table.insert(configs, "-DCMAKE_SYSTEM_PROCESSOR=" .. package:is_targetarch("aarch64", "arm64") and "aarch64" or "armv6l")
+                table.insert(configs, "-DCMAKE_SIZEOF_VOID_P=" .. package:is_targetarch("aarch64", "arm64") and "8" or "4")
+            end
         end
         if package:version() then
             table.insert(configs, "-DX265_LATEST_TAG=" .. package:version():rawstr())
