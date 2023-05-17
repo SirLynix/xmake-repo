@@ -38,6 +38,7 @@ package("x265")
         if package:version() then
             table.insert(configs, "-DX265_LATEST_TAG=" .. package:version():rawstr())
         end
+        table.insert(configs, "--trace")
         import("package.tools.cmake").install(package, configs)
     end)
 
