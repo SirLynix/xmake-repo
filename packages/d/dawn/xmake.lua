@@ -8,7 +8,7 @@ package("dawn")
 
     add_deps("cmake", "python", {private = true})
     if is_plat("linux", "wasm") then
-        add_deps("libx11", "libxext", "libxinerama", "libxcursor", "libxrender", "libxrandr")
+        add_deps("libx11", "libxext", "libxinerama", "libxcursor", "libxi", "libxrender", "libxrandr")
     end
 
     add_links("dawncpp", "dawn_utils", "dawn_native", "dawn_platform", "dawn_wire", "dawn_common", "dawn_proc", "dawncpp_headers", "dawn_headers")
