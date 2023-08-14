@@ -24,6 +24,10 @@ package("dawn")
     end)
 
     on_install(function (package)
+        -- Jinja2 is required to build dawn
+        os.vrunv("python3", {"-m", "pip", "install", "-U", "pip"})
+        os.vrunv("python3", {"-m", "pip", "install", "-U", "Jinja2"})
+
         local configs = {}
         table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:is_debug() and "Debug" or "Release"))
         table.insert(configs, "-DBUILD_SHARED_LIBS=" .. (package:config("shared") and "ON" or "OFF"))
