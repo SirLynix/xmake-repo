@@ -7,6 +7,9 @@ package("dawn")
     add_versions("2023.07.03", "chromium/5869")
 
     add_deps("cmake", "python", {private = true})
+    if is_plat("linux") then
+        add_deps("libxrandr")
+    end
 
     add_links("dawncpp", "dawn_utils", "dawn_native", "dawn_platform", "dawn_wire", "dawn_common", "dawn_proc", "dawncpp_headers", "dawn_headers")
 
