@@ -7,7 +7,9 @@ package("newtondynamics4")
              "https://github.com/MADEAPPS/newton-dynamics.git")
 
     add_versions("v4.01", "c92b64f33488c4774debc110418cbc713fd8e07f37b15e4917b92a7a8d5e785a")
+    add_versions("v4.02", "13050bc4eac34303ad3ff3bca104cc0ebfacc8551c98d02d4f8505cf9ecd9532")
     add_patches("v4.01", path.join(os.scriptdir(), "patches", "v4.01", "cmake.patch"), "a189d6282640b6d46c5f9d0926930bbc2d7bb4f242383fae3521b6b211f569e7")
+    add_patches("v4.02", path.join(os.scriptdir(), "patches", "v4.02", "cmake.patch"), "256c2c7d301722414413bca43605df6cc4adc81bd701d4cf76162608880e3448")
 
     add_configs("symbols",  {description = "Enable debug symbols in release", default = false, type = "boolean"})
 
@@ -30,13 +32,14 @@ package("newtondynamics4")
         end
     end)
 
-    on_install("windows", "linux", "macosx", "mingw", function (package)
+    on_install(function (package)
         os.cd("newton-4.00")
         local configs = {
             "-DNEWTON_BUILD_SANDBOX_DEMOS=OFF", 
             "-DNEWTON_BUILD_TEST=OFF", 
             "-DNEWTON_BUILD_CREATE_SUB_PROJECTS=OFF",
-            "-DNEWTON_ENABLE_AVX2_SOLVER=OFF"
+            "-DNEWTON_ENABLE_AVX2_SOLVER=OFF",
+            "-DNEWTON_EXCLUDE_TEST=ON"
         }
         if package:config("shared") then
             table.insert(configs, "-DBUILD_SHARED_LIBS=ON")
