@@ -1,0 +1,108 @@
+diff --git a/newton-4.00/CMakeLists.txt b/newton-4.00/CMakeLists.txt
+index b9c7467e1..75eafce08 100644
+--- a/newton-4.00/CMakeLists.txt
++++ b/newton-4.00/CMakeLists.txt
+@@ -135,30 +135,6 @@ endif ()
+ if (MSVC)
+ 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
+ 
+-	if (PTR_SIZE EQUAL 8)
+-		set(CMAKE_INSTALL_PREFIX "win64sdk" CACHE PATH "..." FORCE)
+-	else()
+-		set(CMAKE_INSTALL_PREFIX "win32sdk" CACHE PATH "..." FORCE)
+-	endif ()
+-
+-	if(NEWTON_STATIC_RUNTIME_LIBRARIES)
+-		message ("link to static runtime libraries")
+-		set(CMAKE_C_FLAGS_DEBUG "/MTd")
+-		set(CMAKE_C_FLAGS_RELWITHDEBINFO "/MT")
+-		set(CMAKE_C_FLAGS_RELEASE "/MT")
+-		set(CMAKE_CXX_FLAGS_DEBUG "/MTd")
+-		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MT")
+-		set(CMAKE_CXX_FLAGS_RELEASE "/MT")
+-	else()
+-		message ("link to dynamic runtime libraries")
+-		set(CMAKE_C_FLAGS_DEBUG "/MDd")
+-		set(CMAKE_C_FLAGS_RELWITHDEBINFO "/MD")
+-		set(CMAKE_C_FLAGS_RELEASE "/MD")
+-		set(CMAKE_CXX_FLAGS_DEBUG "/MDd")
+-		set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/MD")
+-		set(CMAKE_CXX_FLAGS_RELEASE "/MD")
+-	endif()
+-
+ 	message("Compiler Id: ${CMAKE_CXX_COMPILER_ID}") 
+ 	
+ 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /fp:fast")
+diff --git a/newton-4.00/applications/ndSandbox/CMakeLists.txt b/newton-4.00/applications/ndSandbox/CMakeLists.txt
+index 62ebe447b..53cebc1d9 100644
+--- a/newton-4.00/applications/ndSandbox/CMakeLists.txt
++++ b/newton-4.00/applications/ndSandbox/CMakeLists.txt
+@@ -106,8 +106,6 @@ if(MSVC OR MINGW)
+ 
+     target_link_libraries (${projectName} glu32 opengl32)
+ 
+-	target_link_options(${projectName} PUBLIC "/DEBUG") 
+-
+     if(CMAKE_VS_MSBUILD_COMMAND OR CMAKE_VS_DEVENV_COMMAND)
+ 		set_target_properties(${projectName} PROPERTIES COMPILE_FLAGS "/YundSandboxStdafx.h")
+ 		set_source_files_properties(ndSandboxStdafx.cpp PROPERTIES COMPILE_FLAGS "/YcndSandboxStdafx.h")
+diff --git a/newton-4.00/sdk/CMakeLists.txt b/newton-4.00/sdk/CMakeLists.txt
+index 4c9ef8ef1..ff15e67fc 100644
+--- a/newton-4.00/sdk/CMakeLists.txt
++++ b/newton-4.00/sdk/CMakeLists.txt
+@@ -128,10 +128,6 @@ else()
+ 			target_link_libraries (${projectName} ndSolverOpenCL)
+ 		endif()
+ 
+-		if(MSVC OR MINGW)
+-			target_link_options(${projectName} PUBLIC "/DEBUG") 
+-		endif()
+-
+ 	else()
+ 		add_library(${projectName} STATIC ${CPP_SOURCE})
+ 	endif()
+diff --git a/newton-4.00/sdk/dCore/CMakeLists.txt b/newton-4.00/sdk/dCore/CMakeLists.txt
+index 5c05985ea..8aec6fe3a 100644
+--- a/newton-4.00/sdk/dCore/CMakeLists.txt
++++ b/newton-4.00/sdk/dCore/CMakeLists.txt
+@@ -26,10 +26,6 @@ if(NEWTON_BUILD_SHARED_LIBS STREQUAL "ON")
+ 	add_definitions(-D_D_CORE_EXPORT_DLL)
+ 	add_library(${projectName} SHARED ${CPP_SOURCE})
+ 
+-	if(MSVC OR MINGW)
+-		target_link_options(${projectName} PUBLIC "/DEBUG") 
+-	endif()
+-
+ else()
+ 	add_library(${projectName} STATIC ${CPP_SOURCE})
+ endif()
+diff --git a/newton-4.00/sdk/dNewton/CMakeLists.txt b/newton-4.00/sdk/dNewton/CMakeLists.txt
+index 17d3f45e6..7b51c830c 100644
+--- a/newton-4.00/sdk/dNewton/CMakeLists.txt
++++ b/newton-4.00/sdk/dNewton/CMakeLists.txt
+@@ -92,10 +92,6 @@ source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/" FILES ${CPP_SOURCE})
+ if(NEWTON_BUILD_SHARED_LIBS)
+ 	add_definitions(-D_D_NEWTON_EXPORT_DLL)
+ 	add_library(${projectName} SHARED ${CPP_SOURCE})
+-
+-	if(MSVC OR MINGW)
+-		target_link_options(${projectName} PUBLIC "/DEBUG") 
+-	endif()
+ else()
+ 	add_library(${projectName} STATIC ${CPP_SOURCE})
+ endif()
+diff --git a/newton-4.00/sdk/dNewton/dExtensions/dAvx2/CMakeLists.txt b/newton-4.00/sdk/dNewton/dExtensions/dAvx2/CMakeLists.txt
+index 278994f2c..1fee1413f 100644
+--- a/newton-4.00/sdk/dNewton/dExtensions/dAvx2/CMakeLists.txt
++++ b/newton-4.00/sdk/dNewton/dExtensions/dAvx2/CMakeLists.txt
+@@ -51,10 +51,6 @@ if(UNIX)
+ 	add_library(${projectName} SHARED ${CPP_SOURCE})
+ endif()
+ 
+-if(MSVC OR MINGW)
+-	target_link_options(${projectName} PUBLIC "/DEBUG") 
+-endif()
+-
+ install(TARGETS ${projectName}
+ 		LIBRARY DESTINATION lib
+ 		ARCHIVE DESTINATION lib
